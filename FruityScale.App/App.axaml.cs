@@ -40,6 +40,7 @@ public partial class App : Avalonia.Application
             services.AddSingleton<ISettingsService, JsonSettingsService>();
             services.AddSingleton<ISetupService, FlStudioSetupService>();
             services.AddSingleton<IDialogService, AvaloniaDialogService>();
+            services.AddSingleton<IEnvironmentService, EnvironmentService>();
             
             services.AddSingleton<ScaleMatchingOrchestrator>();
             

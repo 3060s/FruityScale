@@ -9,6 +9,7 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly ISettingsService _settingsService;
     private readonly IDialogService _dialogService;
+    private readonly IEnvironmentService _environmentService;
     private readonly ISetupService _setupService;
     private readonly ScaleMatchingOrchestrator _orchestrator;
     private readonly ILoggerFactory _loggerFactory;
@@ -20,6 +21,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(
         ISettingsService settingsService, 
         IDialogService dialogService, 
+        IEnvironmentService environmentService,
         ISetupService setupService, 
         ScaleMatchingOrchestrator orchestrator,
         ILoggerFactory loggerFactory,
@@ -27,6 +29,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _settingsService = settingsService;
         _dialogService = dialogService;
+        _environmentService = environmentService;
         _setupService = setupService;
         _orchestrator = orchestrator;
         _loggerFactory = loggerFactory;
@@ -45,7 +48,7 @@ public partial class MainWindowViewModel : ViewModelBase
             _logger.LogInformation("No FL Studio path configured. Routing user to SetupView.");
             
             var setupLogger = _loggerFactory.CreateLogger<SetupViewModel>();
-            CurrentContent = new SetupViewModel(this, _setupService, _settingsService, _dialogService, setupLogger);
+            CurrentContent = new SetupViewModel(this, _setupService, _settingsService, _dialogService, _environmentService, setupLogger);
         }
         else
         {

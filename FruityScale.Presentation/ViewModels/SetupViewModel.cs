@@ -11,6 +11,7 @@ public partial class SetupViewModel : ViewModelBase
     private readonly ISetupService _setupService;
     private readonly ISettingsService _settingsService;
     private readonly IDialogService _dialogService;
+    private readonly IEnvironmentService _environmentService;
     private readonly ILogger<SetupViewModel> _logger;
     
     [ObservableProperty]
@@ -19,19 +20,26 @@ public partial class SetupViewModel : ViewModelBase
     
     [ObservableProperty]
     private string _errorMessage = string.Empty;
+    
+    [ObservableProperty]
+    private string _examplePathHint = string.Empty;
 
     public SetupViewModel(
         MainWindowViewModel mainNavigation,
         ISetupService setupService,
         ISettingsService settingsService,
         IDialogService dialogService,
+        IEnvironmentService environmentService,
         ILogger<SetupViewModel> logger)
     {
         _mainNavigation = mainNavigation;
         _setupService = setupService;
         _settingsService = settingsService;
         _dialogService = dialogService;
+        _environmentService = environmentService;
         _logger = logger;
+        
+        ExamplePathHint = _environmentService.DefaultFlStudioPath;
         
         _logger.LogDebug("SetupViewModel initialized.");
     }
