@@ -11,7 +11,7 @@ sealed class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         // TODO: i'm not sure how exactly it works yet, but i think it's good idea if there is .log for every app startup
         // TODO: after sudo kill -SIGSEGV <PID> serilog didnt report Log.Fatal to log file for some reason
@@ -36,7 +36,7 @@ sealed class Program
         }
         finally
         {
-            await Log.CloseAndFlushAsync();
+            Log.CloseAndFlush();
         }
     }
 
