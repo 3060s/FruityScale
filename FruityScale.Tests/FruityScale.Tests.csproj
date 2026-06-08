@@ -22,6 +22,7 @@
     <ItemGroup>
       <ProjectReference Include="..\FruityScale.Application\FruityScale.Application.csproj" />
       <ProjectReference Include="..\FruityScale.Domain\FruityScale.Domain.csproj" />
+      <ProjectReference Include="..\FruityScale.Infrastructure\FruityScale.Infrastructure.csproj" />
       <ProjectReference Include="..\FruityScale.Presentation\FruityScale.Presentation.csproj" />
     </ItemGroup>
 
