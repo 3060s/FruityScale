@@ -12,7 +12,6 @@ public class ScaleMatchingOrchestrator
     private readonly IScaleProvider _scaleProvider;
     private readonly INoteProvider _noteProvider;
     private readonly ISettingsService _settingsService;
-    private readonly IEnvironmentService _environmentService;
     private readonly ISetupService _setupService;
     
     public ScaleMatchingOrchestrator(
@@ -21,7 +20,6 @@ public class ScaleMatchingOrchestrator
         IScaleProvider scaleProvider, 
         INoteProvider noteProvider,
         ISettingsService settingsService,
-        IEnvironmentService environmentService,
         ISetupService setupService)
     {
         _logger = logger;
@@ -29,7 +27,6 @@ public class ScaleMatchingOrchestrator
         _scaleProvider = scaleProvider;
         _noteProvider = noteProvider;
         _settingsService = settingsService;
-        _environmentService = environmentService;
         _setupService = setupService;
     }
 

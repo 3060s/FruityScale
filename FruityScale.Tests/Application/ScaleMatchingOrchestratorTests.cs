@@ -27,6 +27,9 @@ public class ScaleMatchingOrchestratorTests : IDisposable
         _noteProvider = Substitute.For<INoteProvider>();
         _settingsService = Substitute.For<ISettingsService>();
         _setupService = Substitute.For<ISetupService>();
+        
+        var defaultSettings = new UserSettings { FlStudioPath = @"C:\Program Files\Image-Line\FL Studio" };
+        _settingsService.Current.Returns(defaultSettings);
 
         _sut = new ScaleMatchingOrchestrator(
             _logger,
@@ -53,21 +56,21 @@ public class ScaleMatchingOrchestratorTests : IDisposable
     public async Task GetMatchesAsync_ShouldReturnEmpty_WhenFlStudioPathIsEmpty()
     {
         // Arrange
-        _settingsService.GetFlStudioPath().Returns(string.Empty);
+        _settingsService.Current.Returns(new UserSettings { FlStudioPath = string.Empty });
 
         // Act
         var result = await _sut.GetMatchesAsync();
 
         // Assert
         Assert.Empty(result);
-        await _scaleProvider.DidNotReceiveWithAnyArgs().GetScalesAsync(Arg.Any<string>());
+        await _scaleProvider.DidNotReceiveWithAnyArgs().GetScalesAsync();
     }
 
     [Fact]
     public async Task GetMatchesAsync_ShouldReturnEmpty_WhenNotesJsonFileDoesNotExist()
     {
         // Arrange
-        _settingsService.GetFlStudioPath().Returns(@"C:\Program Files\Image-Line\FL Studio");
+        _settingsService.Current.Returns(new UserSettings { FlStudioPath = @"C:\Program Files\Image-Line\FL Studio"});
         _setupService.GetNotesJsonPath(Arg.Any<string>()).Returns(@"C:\NonExistentPath\notes.json");
 
         // Act
@@ -75,17 +78,17 @@ public class ScaleMatchingOrchestratorTests : IDisposable
 
         // Assert
         Assert.Empty(result);
-        await _scaleProvider.DidNotReceiveWithAnyArgs().GetScalesAsync(Arg.Any<string>());
+        await _scaleProvider.DidNotReceiveWithAnyArgs().GetScalesAsync();
     }
 
     [Fact]
     public async Task GetMatchesAsync_ShouldReturnEmpty_WhenLoadedNotesCollectionIsEmpty()
     {
         // Arrange
-        _settingsService.GetFlStudioPath().Returns(@"C:\Program Files\Image-Line\FL Studio");
+        _settingsService.Current.Returns(new UserSettings { FlStudioPath = @"C:\Program Files\Image-Line\FL Studio"});
         _setupService.GetNotesJsonPath(Arg.Any<string>()).Returns(_tempTestFile);
         
-        _scaleProvider.GetScalesAsync(Arg.Any<string>()).Returns(Task.FromResult(new List<ScaleDefinition>()));
+        _scaleProvider.GetScalesAsync().Returns(Task.FromResult(new List<ScaleDefinition>()));
         _noteProvider.LoadNotesAsync(_tempTestFile).Returns(Task.FromResult(new List<NoteEvent>()));
 
         // Act
@@ -100,7 +103,7 @@ public class ScaleMatchingOrchestratorTests : IDisposable
     public async Task GetMatchesAsync_ShouldCorrectlyProcessAndOrderMatches_WhenDataIsValid()
     {
         // Arrange
-        _settingsService.GetFlStudioPath().Returns(@"C:\Program Files\Image-Line\FL Studio");
+        _settingsService.Current.Returns(new UserSettings { FlStudioPath = @"C:\Program Files\Image-Line\FL Studio"});
         _setupService.GetNotesJsonPath(Arg.Any<string>()).Returns(_tempTestFile);
 
         var mockScales = new List<ScaleDefinition> { new ScaleDefinition("Major", new[] { 0, 2, 4 }) };
@@ -111,7 +114,7 @@ public class ScaleMatchingOrchestratorTests : IDisposable
             new NoteEvent(60, "C", "C5") // Duplicate note to test Distinct()
         };
         
-        _scaleProvider.GetScalesAsync(Arg.Any<string>()).Returns(Task.FromResult(mockScales));
+        _scaleProvider.GetScalesAsync().Returns(Task.FromResult(mockScales));
         _noteProvider.LoadNotesAsync(_tempTestFile).Returns(Task.FromResult(mockNotes));
 
         var expectedResults = new List<ScaleMatchResult>
