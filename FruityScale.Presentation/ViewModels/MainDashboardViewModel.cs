@@ -34,7 +34,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         _settingsService = settingsService;
         _logger = logger;
         
-        _dawPath = _settingsService.GetFlStudioPath();
+        _dawPath = _settingsService.Current.FlStudioPath;
         _logger.LogDebug("MainDashboardViewModel initialized with DAW path: {DawPath}", _dawPath);
     }
     
