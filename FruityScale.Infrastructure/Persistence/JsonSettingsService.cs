@@ -8,20 +8,23 @@ namespace FruityScale.Infrastructure.Persistence;
 public class JsonSettingsService : ISettingsService
 {
     private readonly ILogger<JsonSettingsService> _logger;
+    private readonly IEnvironmentService _environment;
     private readonly string _configPath;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly UserSettings _cachedSettings;
     
     public UserSettings Current => _cachedSettings;
 
-    public JsonSettingsService(ILogger<JsonSettingsService> logger)
+    public JsonSettingsService(
+        ILogger<JsonSettingsService> logger,
+        IEnvironmentService environment)
     {
         _logger = logger;
+        _environment = environment;
         _jsonOptions = new JsonSerializerOptions { WriteIndented = true };
         
-        var appFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
-        Directory.CreateDirectory(appFolder);
-        _configPath = Path.Combine(appFolder, "config.json");
+        Directory.CreateDirectory(_environment.AppFolder);
+        _configPath = _environment.ConfigFilePath;
         
         _cachedSettings = LoadSettingsFromFile();
     }
