@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Serilog;
 using Serilog.Enrichers.ShortTypeName;
@@ -14,12 +15,17 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // TODO: save this somewhere because it's also used by JsonSettingsService
+        var appFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
+        var logPath = Path.Combine(appFolder, "logs", "fruityscale-.txt");
+        
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .Enrich.WithShortTypeName()
             .WriteTo.Console(
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ShortTypeName}] {Message:lj}{NewLine}{Exception}")
-            .WriteTo.File("logs/fruityscale-.txt", // logs location (app directory, inside /logs)
+            .WriteTo.File(
+                logPath,
                 rollingInterval: RollingInterval.Day, // new file every 24h
                 retainedFileCountLimit: 10, // max 10 .log files
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ShortTypeName}] {Message:lj}{NewLine}{Exception}")
