@@ -4,5 +4,5 @@ namespace FruityScale.Application.Contracts;
 
 public interface IScaleProvider
 {
-    Task<List<ScaleDefinition>> GetScalesAsync(string source);
+    Task<List<ScaleDefinition>> GetScalesAsync();
 }

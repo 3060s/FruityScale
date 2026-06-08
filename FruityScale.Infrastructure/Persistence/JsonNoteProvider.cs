@@ -14,7 +14,6 @@ public class JsonNoteProvider : INoteProvider
         _logger = logger;
     }
     
-    // TODO: filePath shouldn't be parameter. The best option is to get filepath const from something like appsettings.json
     public async Task<List<NoteEvent>> LoadNotesAsync(string filePath)
     {
         _logger.LogInformation("Attempting to load notes from file: {FilePath}", filePath);

@@ -53,9 +53,7 @@ public class ScaleMatchingOrchestrator
         
         try
         {
-            string scaleLibraryPath = _environmentService.ScaleLibraryPath;
-            
-            var scalesTask = _scaleProvider.GetScalesAsync(scaleLibraryPath);
+            var scalesTask = _scaleProvider.GetScalesAsync();
             var notesTask = _noteProvider.LoadNotesAsync(flStudioFilePath);
             
             await Task.WhenAll(scalesTask, notesTask);
