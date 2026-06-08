@@ -1,7 +1,9 @@
 ﻿using Avalonia;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Serilog;
+using Serilog.Enrichers.ShortTypeName;
 
 namespace FruityScale;
 
@@ -13,14 +15,20 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        // TODO: i'm not sure how exactly it works yet, but i think it's good idea if there is .log for every app startup
-        // TODO: after sudo kill -SIGSEGV <PID> serilog didnt report Log.Fatal to log file for some reason
+        // TODO: save this somewhere because it's also used by JsonSettingsService
+        var appFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
+        var logPath = Path.Combine(appFolder, "logs", "fruityscale-.txt");
+        
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug() // log everything higher than Debug
-            .WriteTo.Console()    // log to console
-            .WriteTo.File("logs/fruityscale-.txt", // logs location (app directory, inside /logs)
+            .MinimumLevel.Debug()
+            .Enrich.WithShortTypeName()
+            .WriteTo.Console(
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ShortTypeName}] {Message:lj}{NewLine}{Exception}")
+            .WriteTo.File(
+                logPath,
                 rollingInterval: RollingInterval.Day, // new file every 24h
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}")
+                retainedFileCountLimit: 10, // max 10 .log files
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ShortTypeName}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
         
         try
