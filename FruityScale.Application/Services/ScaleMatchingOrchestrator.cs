@@ -34,7 +34,7 @@ public class ScaleMatchingOrchestrator
     {
         _logger.LogInformation("Starting scale matching process.");
         
-        string flPath = _settingsService.GetFlStudioPath();
+        string flPath = _settingsService.Current.FlStudioPath;
         if (string.IsNullOrEmpty(flPath)) 
         {
             _logger.LogWarning("Matching aborted: FL Studio path is not configured.");
@@ -50,9 +50,7 @@ public class ScaleMatchingOrchestrator
         
         try
         {
-            string scaleLibraryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "scale_library.json");
-            
-            var scalesTask = _scaleProvider.GetScalesAsync(scaleLibraryPath);
+            var scalesTask = _scaleProvider.GetScalesAsync();
             var notesTask = _noteProvider.LoadNotesAsync(flStudioFilePath);
             
             await Task.WhenAll(scalesTask, notesTask);

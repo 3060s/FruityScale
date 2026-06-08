@@ -83,4 +83,17 @@ public class EnvironmentService : IEnvironmentService
             _ => string.Empty
         };
     }
+    
+    // Path definition
+    public string AppFolder => 
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
+
+    public string LogFilePath => 
+        Path.Combine(AppFolder, "logs", "fruityscale-.txt");
+
+    public string ConfigFilePath => 
+        Path.Combine(AppFolder, "config.json");
+    
+    public string ScaleLibraryPath => 
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "scale_library.json");
 }

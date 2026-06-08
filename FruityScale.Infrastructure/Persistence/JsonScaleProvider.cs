@@ -8,15 +8,20 @@ namespace FruityScale.Infrastructure.Persistence;
 public class JsonScaleProvider : IScaleProvider
 {
     private readonly ILogger<JsonScaleProvider> _logger;
+    private readonly IEnvironmentService _environmentService;
 
-    public JsonScaleProvider(ILogger<JsonScaleProvider> logger)
+    public JsonScaleProvider(
+        ILogger<JsonScaleProvider> logger, 
+        IEnvironmentService environmentService)
     {
         _logger = logger;
+        _environmentService = environmentService;
     }
     
-    // TODO: filePath shouldn't be passed as param. The best option is to get filepath const from something like appsettings.json
-    public async Task<List<ScaleDefinition>> GetScalesAsync(string filePath)
+    public async Task<List<ScaleDefinition>> GetScalesAsync()
     {
+        string filePath = _environmentService.ScaleLibraryPath;
+        
         _logger.LogInformation("Attempting to load scales library from file: {FilePath}", filePath);
         //if (!File.Exists(filePath)) return new List<ScaleDefinition>();
         

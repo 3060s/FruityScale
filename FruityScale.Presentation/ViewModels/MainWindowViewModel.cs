@@ -41,7 +41,7 @@ public partial class MainWindowViewModel : ViewModelBase
     
     public void DetermineInitialView()
     {
-        string currentPath = _settingsService.GetFlStudioPath();
+        string currentPath = _settingsService.Current.FlStudioPath;
 
         if (string.IsNullOrEmpty(currentPath))
         {
