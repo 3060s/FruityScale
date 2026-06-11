@@ -30,6 +30,10 @@
       <AvaloniaResource Include="Resources\favicon.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AvaloniaResource>
+      <None Remove="Resources\FruityScale.gif" />
+      <AvaloniaResource Include="Resources\FL_ExportGuide.gif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
     </ItemGroup>
     
 </Project>
