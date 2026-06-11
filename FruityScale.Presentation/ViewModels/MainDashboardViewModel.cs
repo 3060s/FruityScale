@@ -21,7 +21,7 @@ public partial class MainDashboardViewModel : ViewModelBase
     private bool _isScanning;
 
     [ObservableProperty]
-    private string _statusMessage = "Ready to scan. Run FlStudioNotesExporter script in FL studio, and click Scan.";
+    private string _statusMessage = "Ready to scan. Run FLNotesExport script in FL studio, and click Scan.";
     
     public ObservableCollection<ScaleMatchItemViewModel> ScanResults { get; } = new();
 
