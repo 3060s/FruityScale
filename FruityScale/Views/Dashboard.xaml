@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="FruityScale.Views.Dashboard"
+        Title="FruityScale"
+        Width="800" Height="450">
+    <Grid>
+        <!-- existing content -->
+        
+        <!-- new status bar -->
+        <StatusBar Grid.Row="1" x:Name="StatusBar" Visibility="Collapsed">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusBarText" Foreground="Red" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
