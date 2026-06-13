@@ -72,27 +72,12 @@ With just few clicks, FruityScale retrieves note data directly from your current
 
 ## Getting Started
 
-### Prerequisites
-
-To build this project from source, you need to install the required tools for your operating system:
-
-#### Windows
-1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download).
-2. **Git** – Download and install [Git for Windows](https://git-scm.com/download/win) (required to clone the repository via terminal).
-
-#### macOS
-1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download) (select the installer matching your chip: Intel or Apple Silicon M1/M2/M3).
-2. **Git** – Install via [Homebrew](https://brew.sh/) (`brew install git`) or download from [git-scm.com](https://git-scm.com/download/mac).
-
-#### Linux
-1. **.NET 10 SDK** – Install via your distribution's package manager (e.g., `sudo apt install dotnet-sdk-10.0` on Ubuntu) or follow the official [Linux .NET installation guide](https://learn.microsoft.com/en-us/dotnet/core/install/linux).
-2. **Git** – Install via your package manager (e.g., `sudo apt install git` or `sudo dnf install git`).
-
----
-
 ### Installation & Building from Source
 
-Once the prerequisites are installed, open your terminal (PowerShell or CMD on Windows) and follow these steps:
+1. Download and install .NET 10 SDK.
+2. Download Git.
+
+Once the prerequisites are installed, open your terminal/console and follow these steps:
 
 1. Clone the repository:
    ```sh
