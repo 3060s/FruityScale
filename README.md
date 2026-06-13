@@ -108,12 +108,37 @@ Once the prerequisites are installed, open your terminal (PowerShell or CMD on W
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Visual Guide
+
+Here you can see how to use export script inside FL Studio to generate .json file needed for app to match scales:
+
+<div align="center">
+  <img src="FruityScale.Infrastructure/Resources/FL_ExportGuide.gif" alt="FL Studio Export Guide" width="60%" height="60%" max-width="800px">
+</div>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Usage
 
-1. Open your project in FL Studio and add some notes to the Piano Roll.
-2. Run the provided FruityScale internal script inside FL Studio.
-3. Open the FruityScale desktop app and click the fetch button.
-4. The application will instantly display all compatible musical scales based on your notes.
+FruityScale works side-by-side with FL Studio to make scale identification seamless. Follow these steps to analyze your project:
+
+### 1. Prepare Your Notes
+Open your project in FL Studio and write or record some notes inside the **Piano Roll**.
+
+### 2. Run the Script in FL Studio
+Execute the provided FruityScale internal script within FL Studio. This will save our notes from piano roll into notes.json file needed for our app (as shown in the [Visual Guide](#visual-guide)).
+
+### 3. Fetch & Analyze
+* Open **FruityScale** application.
+* Click the **Scan Piano Roll** button on the main UI.
+
+### 4. Explore the Results
+FruityScale will instantly process your notes and provide a breakdown of:
+* **Compatible scales:** List of musical scales that perfectly or closely match your note selection.
+* **Played notes:** List of notes you have placed in piano roll.
+* **Notes you can add:** List of notes you can add to your piano roll which match the selected scale.
+* **Notes in selected scale:** List of notes available in selected scale.
+* **Virtual keyboard:** Visual representation of keyboard with all things described above.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
