@@ -131,14 +131,12 @@ FruityScale will instantly process your notes and provide a breakdown of:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Roadmap
+## Planned features
 
-- [x] Initial FL Studio script integration
-- [x] One-click note data fetching
-- [x] Basic scale matching algorithm
-- [ ] Support for other popular DAWs (Ableton, Logic Pro, Reaper, etc.)
-- [ ] Advanced analysis tools and extended chord detection
-- [ ] Experimental: Live MIDI input tracking with real-time scale detection
+- Support for other popular DAWs (Ableton, Logic Pro, Reaper, etc.) where scripting is possible
+- User settings
+- Menu with music theory cheat sheet
+- Live MIDI input tracking with real-time scale detection
 
 See the [open issues](https://github.com/3060s/FruityScale/issues) for a full list of proposed features (and known issues).
 
