@@ -144,7 +144,7 @@
                                 
                                 <!-- Match score in percentage % -->
                                 <Border Grid.Column="0" 
-                                        Background="#1A2E26" 
+                                        Background="{Binding ScoreBackgroundColor}" 
                                         CornerRadius="4" 
                                         Padding="8,4" 
                                         Margin="0,0,16,0"
@@ -152,7 +152,7 @@
                                     <TextBlock Text="{Binding Result.Score, StringFormat='{}{0:P0}'}" 
                                                FontWeight="Bold" 
                                                FontSize="14" 
-                                               Foreground="#34D399"
+                                               Foreground="{Binding ScoreColor}"
                                                HorizontalAlignment="Center"/>
                                 </Border>
                                 
