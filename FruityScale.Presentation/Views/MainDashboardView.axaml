@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:FruityScale.Presentation.ViewModels"
              xmlns:converters="using:FruityScale.Presentation.Converters"
+             xmlns:gif="clr-namespace:Avalonia.Labs.Gif;assembly=Avalonia.Labs.Gif"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
              x:Class="FruityScale.Presentation.Views.MainDashboardView"
              x:DataType="vm:MainDashboardViewModel"
@@ -11,6 +12,7 @@
     
     <UserControl.Resources>
         <converters:NoteNameConverter x:Key="NoteNameConverter"/>
+        <converters:GifSourceConverter x:Key="GifSourceConverter"/>
     </UserControl.Resources>
     
     <Grid RowDefinitions="Auto, Auto, *, Auto" Margin="24">
@@ -42,9 +44,53 @@
                 </Style>
             </Button.Styles>
         </Button>
+        
+        <!-- TODO: This grid shows sometimes after clicking to scan notes which has to be changed -->
+        <!-- It can be made more responsive, but I have no idea how to -->
+        <!-- View/Guide before scanning notes -->
+        <Grid Grid.Row="2" 
+              IsVisible="{Binding HasNoResults}" 
+              RowDefinitions="*, Auto"
+              Margin="24">
+    
+            <Border Grid.Row="0"
+                    Background="#1E1E22"
+                    BorderBrush="#2D2D34"
+                    BorderThickness="1"
+                    CornerRadius="20"
+                    ClipToBounds="True"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BoxShadow="0 4 12 0 #000000"
+                    Margin="0,0,0,20">
+        
+                <gif:GifImage Source="{Binding Source='avares://FruityScale.Infrastructure/Resources/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
+                              MinHeight="250" 
+                              MinWidth="350"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+            </Border>
+
+            <StackPanel Grid.Row="1" Spacing="6" HorizontalAlignment="Center">
+                <TextBlock Text="▲" 
+                           Foreground="#F3F4F6" 
+                           FontSize="18" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,4"/>
+                
+                <TextBlock Text="How to use the script inside FL Studio" 
+                           Foreground="#F3F4F6" 
+                           FontSize="16" 
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
 
         <!-- Scanning result as scrollable list -->
         <ListBox Grid.Row="2" 
+                 IsVisible="{Binding !HasNoResults}"
                  ItemsSource="{Binding ScanResults}" 
                  Background="#1E1E22" 
                  CornerRadius="8"

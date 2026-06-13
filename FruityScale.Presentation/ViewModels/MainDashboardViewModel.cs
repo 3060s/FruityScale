@@ -19,9 +19,12 @@ public partial class MainDashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _isScanning;
+    
+    [ObservableProperty]
+    private bool _hasNoResults = true;
 
     [ObservableProperty]
-    private string _statusMessage = "Ready to scan. Run FlStudioNotesExporter script in FL studio, and click Scan.";
+    private string _statusMessage = "Ready to scan. Run FLNotesExport script in FL studio, and click Scan.";
     
     public ObservableCollection<ScaleMatchItemViewModel> ScanResults { get; } = new();
 
@@ -46,6 +49,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         IsScanning = true;
         StatusMessage = "Scanning and matching scales...";
         ScanResults.Clear();
+        HasNoResults = true;
 
         try
         {
@@ -79,6 +83,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         finally
         {
             IsScanning = false;
+            HasNoResults = ScanResults.Count == 0;
         }
     }
 }

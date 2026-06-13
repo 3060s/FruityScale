@@ -8,7 +8,7 @@ BASE_PATH = os.getcwd()
 NOTES_CHART = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 def createDialog():
-    return flp.ScriptDialog("FruityScale", "Saves notes to 'notes.json'\n\n\nMade by 3060s")
+    return flp.ScriptDialog("FruityScale", "1.Click accept to save your piano roll to 'notes.json'\n2.Press 'Scan piano roll' inside FruityScale to see matched scales\n\nMade by 3060s")
 
 def apply(form):
     file_path = os.path.join(BASE_PATH, "notes.json")

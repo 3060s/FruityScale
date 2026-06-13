@@ -36,13 +36,13 @@ public class FlStudioSetupService : ISetupService
             string sourceScriptPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "Resources",
-                "FlStudioNotesExporter.pyscript"
+                "FLNotesExport.pyscript"
             );
 
             // path we copy the script to
             string targetScriptPath = Path.Combine(
                 targetScriptsFolder,
-                "FlStudioNotesExporter.pyscript"
+                "FLNotesExport.pyscript"
             );
 
             if (!File.Exists(sourceScriptPath))

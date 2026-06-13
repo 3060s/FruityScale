@@ -16,8 +16,8 @@
       <Content Include="Resources\scale_library.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <None Remove="Resources\FlStudioNotesExporter.pyscript" />
-      <Content Include="Resources\FlStudioNotesExporter.pyscript">
+      <None Remove="Resources\FLNotesExport.pyscript" />
+      <Content Include="Resources\FLNotesExport.pyscript">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
@@ -28,6 +28,10 @@
 
     <ItemGroup>
       <AvaloniaResource Include="Resources\favicon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Remove="Resources\FruityScale.gif" />
+      <AvaloniaResource Include="Resources\FL_ExportGuide.gif">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AvaloniaResource>
     </ItemGroup>
