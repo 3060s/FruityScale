@@ -53,6 +53,10 @@
 FruityScale is a desktop application designed to bridge the gap between your DAW and music theory. It currently integrates with FL Studio via a lightweight, internal script. 
 
 With just few clicks, FruityScale retrieves note data directly from your current Piano Roll and instantly analyzes which musical scales those notes belong to. It is a quick and seamless way to stay in key, analyze complex chords, or figure out where to take your melodies next.
+<br><br>
+
+**App preview:**
+<video src="https://github.com/user-attachments/assets/18d74d34-8b35-4c7d-aa3b-4bbd077b36e1" controls playsinline width="100%"></video>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
