@@ -1,5 +1,3 @@
-<b>THIS README IS WIP SO IT WILL BE CHANGED SOON</b>
-
 <a id="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -17,7 +15,7 @@
 <h3 align="center">FruityScale</h3>
 
   <p align="center">
-    A smart companion application that analyzes your FL Studio Piano Roll notes to instantly identify matching musical scales.
+    Practical and easy-to-use application which is designed to help you make music in key and stay in scale.
     <br />
     <a href="https://github.com/3060s/FruityScale"><strong>Explore the docs »</strong></a>
     <br />
@@ -58,8 +56,6 @@ With just few clicks, FruityScale retrieves note data directly from your current
 **App preview:**
 <video src="https://github.com/user-attachments/assets/18d74d34-8b35-4c7d-aa3b-4bbd077b36e1" controls playsinline width="100%"></video>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
 
 * [![C#][CSharp-shield]][CSharp-url]
@@ -67,8 +63,6 @@ With just few clicks, FruityScale retrieves note data directly from your current
 * [![AvaloniaUI][Avalonia-shield]][Avalonia-url]
 * [![Serilog][Serilog-shield]][Serilog-url]
 * [![xUnit][xUnit-shield]][xUnit-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -95,8 +89,6 @@ Once the prerequisites are installed, open your terminal/console and follow thes
    ```sh
    dotnet run --project FruityScale.App
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Visual Guide
 
 Here you can see how to use export script inside FL Studio to generate .json file needed for app to match scales:
@@ -104,8 +96,6 @@ Here you can see how to use export script inside FL Studio to generate .json fil
 <div align="center">
   <img src="FruityScale.Infrastructure/Resources/FL_ExportGuide.gif" alt="FL Studio Export Guide" width="60%" height="60%" max-width="800px">
 </div>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
@@ -129,8 +119,6 @@ FruityScale will instantly process your notes and provide a breakdown of:
 * **Notes in selected scale:** List of notes available in selected scale.
 * **Virtual keyboard:** Visual representation of keyboard with all things described above.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Planned features
 
 - Support for other popular DAWs (Ableton, Logic Pro, Reaper, etc.) where scripting is possible
@@ -139,8 +127,6 @@ FruityScale will instantly process your notes and provide a breakdown of:
 - Live MIDI input tracking with real-time scale detection
 
 See the [open issues](https://github.com/3060s/FruityScale/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 
@@ -155,8 +141,6 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Top contributors:
 
 <a href="https://github.com/3060s/FruityScale/graphs/contributors">
@@ -167,13 +151,9 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the GPL-3.0 License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Contact
 
 Project Link: [https://github.com/3060s/FruityScale](https://github.com/3060s/FruityScale)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [contributors-shield]: https://img.shields.io/github/contributors/3060s/FruityScale.svg?style=for-the-badge
 [contributors-url]: https://github.com/3060s/FruityScale/graphs/contributors
