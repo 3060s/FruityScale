@@ -65,8 +65,8 @@ With just few clicks, FruityScale retrieves note data directly from your current
 * [![C#][CSharp-shield]][CSharp-url]
 * [![.NET][DotNet-shield]][DotNet-url]
 * [![AvaloniaUI][Avalonia-shield]][Avalonia-url]
-
-> **Note:** This project also utilizes **Serilog** for robust logging and **xUnit** for comprehensive unit testing.
+* [![Serilog][Serilog-shield]][Serilog-url]
+* [![xUnit][xUnit-shield]][xUnit-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -209,3 +209,7 @@ Project Link: [https://github.com/3060s/FruityScale](https://github.com/3060s/Fr
 [DotNet-url]: https://dotnet.microsoft.com/
 [Avalonia-shield]: https://img.shields.io/badge/AvaloniaUI-33A3E3?style=for-the-badge&logo=dotnet&logoColor=white
 [Avalonia-url]: https://avaloniaui.net/
+[Serilog-shield]: https://img.shields.io/badge/Serilog-211150?style=for-the-badge&logo=serilog&logoColor=white
+[Serilog-url]: https://serilog.net/
+[xUnit-shield]: https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white
+[xUnit-url]: https://xunit.net/
