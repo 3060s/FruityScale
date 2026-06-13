@@ -18,9 +18,22 @@ public partial class ScaleMatchItemViewModel : ObservableObject
     public List<string> UserNotes { get; }
     
     public List<PianoKeyViewModel> KeyboardVisualization { get; }
-    
+
     public bool HasWrongNotes => WrongNotes.Any();
     public bool HasMissingNotes => MissingNotes.Any();
+    public string ScoreColor => Result.Score switch
+    {
+        >= 1.0 => "#34D399",   
+        >= 0.7 => "#F59E0B",   
+        _ => "#EF4444"    
+    };
+
+    public string ScoreBackgroundColor => Result.Score switch
+    {
+        >= 1.0 => "#1A2E26",
+        >= 0.7 => "#2D251A",
+        _ => "#2D1A1A"
+    };
 
     public ScaleMatchItemViewModel(ScaleMatchResult result)
     {
