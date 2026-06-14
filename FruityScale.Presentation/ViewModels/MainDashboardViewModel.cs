@@ -22,6 +22,9 @@ public partial class MainDashboardViewModel : ViewModelBase
     
     [ObservableProperty]
     private bool _hasNoResults = true;
+    
+    [ObservableProperty]
+    private bool _isGifExpanded;
 
     [ObservableProperty]
     private string _statusMessage = "Ready to scan. Run FLNotesExport script in FL studio, and click Scan.";
@@ -42,6 +45,9 @@ public partial class MainDashboardViewModel : ViewModelBase
     }
     
     [RelayCommand]
+    private void ToggleGifSize() => IsGifExpanded = !IsGifExpanded;
+    
+    [RelayCommand]
     private async Task ScanNotesAsync()
     {
         _logger.LogInformation("User triggered 'Scan Piano Roll' operation.");
@@ -49,7 +55,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         IsScanning = true;
         StatusMessage = "Scanning and matching scales...";
         ScanResults.Clear();
-        HasNoResults = true;
+        HasNoResults = false;
 
         try
         {
