@@ -50,41 +50,54 @@
         <!-- View/Guide before scanning notes -->
         <Grid Grid.Row="2" 
               IsVisible="{Binding HasNoResults}" 
-              RowDefinitions="*, Auto"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
               Margin="24">
-    
-            <Border Grid.Row="0"
-                    Background="#1E1E22"
-                    BorderBrush="#2D2D34"
-                    BorderThickness="1"
-                    CornerRadius="20"
-                    ClipToBounds="True"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BoxShadow="0 4 12 0 #000000"
-                    Margin="0,0,0,20">
-        
-                <gif:GifImage Source="{Binding Source='avares://FruityScale.Infrastructure/Resources/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
-                              MinHeight="250" 
-                              MinWidth="350"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-            </Border>
-
-            <StackPanel Grid.Row="1" Spacing="6" HorizontalAlignment="Center">
-                <TextBlock Text="▲" 
-                           Foreground="#F3F4F6" 
-                           FontSize="18" 
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,4"/>
-                
-                <TextBlock Text="How to use the script inside FL Studio" 
-                           Foreground="#F3F4F6" 
-                           FontSize="16" 
-                           FontWeight="SemiBold"
+            
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <TextBlock Text="💡" 
+                           FontSize="32"
                            HorizontalAlignment="Center"/>
+                
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Ready to analyze your melodies" 
+                               Foreground="#F3F4F6" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>
+                    
+                    <TextBlock Text="Run the FLNotesExport script in FL Studio, then click Scan Piano Roll above." 
+                               Foreground="#9CA3AF" 
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+                </StackPanel>
+
+                <Button Command="{Binding ToggleGifSizeCommand}"
+                        HorizontalAlignment="Center"
+                        Padding="14,10"
+                        Background="#252529"
+                        BorderBrush="#3D3D44"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Cursor="Hand">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#2A2A30"/>
+                            <Setter Property="BorderBrush" Value="#10B981"/>
+                        </Style>
+                    </Button.Styles>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="❓" FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="Don't know how to use the script? Watch Guide" 
+                                   Foreground="#E5E7EB"
+                                   FontSize="13" 
+                                   FontWeight="Medium" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -343,6 +356,53 @@
                        FontSize="12" 
                        Foreground="#9CA3AF"
                        TextWrapping="Wrap"/>
+        </Border>
+        
+        <Border Grid.Row="0" 
+                Grid.RowSpan="4" 
+                Background="#121214"
+                ClipToBounds="True"
+                IsVisible="{Binding IsGifExpanded}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+    
+            <Grid RowDefinitions="Auto, *">
+        
+                <Button Grid.Row="0"
+                        Command="{Binding ToggleGifSizeCommand}"
+                        HorizontalAlignment="Right"
+                        Margin="24"
+                        Padding="12,8"
+                        Background="#252529"
+                        Foreground="#FFFFFF"
+                        CornerRadius="6"
+                        Cursor="Hand">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#EF4444"/>
+                        </Style>
+                    </Button.Styles>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="✕" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="Close Fullscreen" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Border Grid.Row="1"
+                        Margin="40,0,40,40"
+                        Background="#1E1E22"
+                        BorderBrush="#2D2D34"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        ClipToBounds="True"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <gif:GifImage Source="{Binding Source='avares://FruityScale.Infrastructure/Resources/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
+                                  MaxWidth="1280"
+                                  MaxHeight="720"
+                                  Stretch="Uniform" />
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
