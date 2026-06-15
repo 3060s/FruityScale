@@ -9,7 +9,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/3060s/FruityScale">
-    <img src="FruityScale.Infrastructure/Resources/favicon.png" alt="Logo" width="80" height="80">
+    <img src="FruityScale.Presentation/Assets/favicon.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">FruityScale</h3>
