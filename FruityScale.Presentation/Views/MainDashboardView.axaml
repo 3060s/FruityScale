@@ -397,7 +397,7 @@
                         ClipToBounds="True"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                    <gif:GifImage Source="{Binding Source='avares://FruityScale.Infrastructure/Resources/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
+                    <gif:GifImage Source="{Binding Source='avares://FruityScale.Presentation/Assets/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
                                   MaxWidth="1280"
                                   MaxHeight="720"
                                   Stretch="Uniform" />
