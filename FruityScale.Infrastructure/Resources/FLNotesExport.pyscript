@@ -28,7 +28,7 @@ def apply(form):
         full_name = f"{name}{octave}"
         
         note_data = {
-            "note_number": note.number,
+            "noteNumber": note.number,
             "name": full_name,
             "key": name
             # "time": note.time,

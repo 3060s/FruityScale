@@ -8,7 +8,7 @@
         x:Class="FruityScale.Presentation.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="FruityScale"
-        Icon="avares://FruityScale.Infrastructure/Resources/favicon.png">
+        Icon="avares://FruityScale.Presentation/Assets/favicon.png">
     
         <Window.DataTemplates>
                 <DataTemplate DataType="{x:Type vm:SetupViewModel}">

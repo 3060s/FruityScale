@@ -8,6 +8,12 @@
 
     <ItemGroup>
       <AvaloniaResource Include="Assets\avalonia-logo.ico" />
+      <AvaloniaResource Include="Assets\favicon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <AvaloniaResource Include="Assets\FL_ExportGuide.gif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
