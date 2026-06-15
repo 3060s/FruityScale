@@ -58,8 +58,7 @@ public class ScaleMatchingOrchestrator
             var allScales = await scalesTask;
             var userNotes = await notesTask;
             
-            // TODO: do something with the warning
-            if (userNotes == null || !userNotes.Any())
+            if (userNotes.Count == 0)
             {
                 _logger.LogWarning("Matching aborted: No user notes were found in the exported file.");
                 return Enumerable.Empty<ScaleMatchResult>();
