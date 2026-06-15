@@ -16,34 +16,44 @@
     </UserControl.Resources>
     
     <Grid RowDefinitions="Auto, Auto, *, Auto" Margin="24">
-        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
-            <StackPanel Grid.Column="0" Spacing="4">
+        <Grid Grid.Row="0" ColumnDefinitions="*, 340" Margin="0,0,0,24">
+            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
                 <TextBlock Text="FruityScale Dashboard" FontSize="24" FontWeight="SemiBold" Foreground="#F3F4F6"/>
                 <TextBlock Text="{Binding DawPath, StringFormat='Active Path: {0}'}" FontSize="12" Foreground="#9CA3AF" TextWrapping="NoWrap"/>
             </StackPanel>
-        </Grid>
 
-        <!-- Scan piano roll button -->
-        <Button Grid.Row="1" 
-                Content="Scan Piano Roll" 
-                Command="{Binding ScanNotesCommand}"
-                IsEnabled="{Binding !IsScanning}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Padding="16"
-                Background="#10B981"
-                Foreground="#FFFFFF"
-                FontSize="15"
-                FontWeight="SemiBold"
-                CornerRadius="8"
-                Cursor="Hand"
-                Margin="0,0,0,20">
-            <Button.Styles>
-                <Style Selector="Button:pointerover /template/ ContentPresenter">
-                    <Setter Property="Background" Value="#059669"/>
-                </Style>
-            </Button.Styles>
-        </Button>
+            <!-- Scan piano roll button -->
+            <Button Grid.Column="1" 
+                    Content="SCAN PIANO ROLL" 
+                    Command="{Binding ScanNotesCommand}"
+                    IsEnabled="{Binding !IsScanning}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Padding="0,14"
+                    Background="#1E1E22"
+                    Foreground="#10B981"
+                    BorderBrush="#10B981"
+                    BorderThickness="1"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    LetterSpacing="1"
+                    CornerRadius="6"
+                    Cursor="Hand">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#10B981"/>
+                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                        <Setter Property="BorderBrush" Value="#10B981"/>
+                    </Style>
+                    <Style Selector="Button:disabled /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#161619"/>
+                        <Setter Property="Foreground" Value="#4B5563"/>
+                        <Setter Property="BorderBrush" Value="#374151"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </Grid>
         
         <!-- TODO: This grid shows sometimes after clicking to scan notes which has to be changed -->
         <!-- It can be made more responsive, but I have no idea how to -->
