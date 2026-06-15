@@ -94,7 +94,7 @@ Once the prerequisites are installed, open your terminal/console and follow thes
 Here you can see how to use export script inside FL Studio to generate .json file needed for app to match scales:
 
 <div align="center">
-  <img src="FruityScale.Infrastructure/Resources/FL_ExportGuide.gif" alt="FL Studio Export Guide" width="60%" height="60%" max-width="800px">
+  <img src="FruityScale.Presentation/Assets/FL_ExportGuide.gif" alt="FL Studio Export Guide" width="60%" height="60%" max-width="800px">
 </div>
 
 ## Usage
