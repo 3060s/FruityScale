@@ -21,7 +21,11 @@ public class JsonSettingsService : ISettingsService
     {
         _logger = logger;
         _environment = environment;
-        _jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+        _jsonOptions = new JsonSerializerOptions 
+        { 
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
         
         Directory.CreateDirectory(_environment.AppFolder);
         _configPath = _environment.ConfigFilePath;
