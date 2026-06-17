@@ -13,16 +13,17 @@
 
     <ItemGroup>
       <None Remove="Resources\scale_library.json" />
-      <Content Include="Resources\scale_library.json">
+      <AvaloniaResource Include="Resources\scale_library.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+      </AvaloniaResource>
       <None Remove="Resources\FLNotesExport.pyscript" />
-      <Content Include="Resources\FLNotesExport.pyscript">
+      <AvaloniaResource Include="Resources\FLNotesExport.pyscript">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+      </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Avalonia" Version="12.0.3" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-preview.4.26230.115" />
     </ItemGroup>
 

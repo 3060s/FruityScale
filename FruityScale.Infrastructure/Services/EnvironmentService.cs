@@ -1,3 +1,4 @@
+using Avalonia.Platform;
 using FruityScale.Application.Contracts;
 using FruityScale.Domain.Enums;
 
@@ -94,6 +95,15 @@ public class EnvironmentService : IEnvironmentService
     public string ConfigFilePath => 
         Path.Combine(AppFolder, "config.json");
     
-    public string ScaleLibraryPath => 
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "scale_library.json");
+    public Stream GetScaleLibraryStream()
+    {
+        var uri = new Uri("avares://FruityScale.Infrastructure/Resources/scale_library.json");
+        return AssetLoader.Open(uri);
+    }
+    
+    public Stream GetFlNotesExportScriptStream()
+    {
+        var uri = new Uri("avares://FruityScale.Infrastructure/Resources/FLNotesExport.pyscript");
+        return AssetLoader.Open(uri);
+    }
 }

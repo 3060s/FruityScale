@@ -10,5 +10,7 @@ public interface IEnvironmentService
     string AppFolder { get; }
     string LogFilePath { get; }
     string ConfigFilePath { get; }
-    string ScaleLibraryPath { get; }
+
+    Stream GetScaleLibraryStream();
+    Stream GetFlNotesExportScriptStream();
 }
