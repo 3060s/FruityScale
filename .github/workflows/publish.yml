@@ -1,0 +1,53 @@
+name: Publish Release Executables
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Publish on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact_name: FruityScale-linux-x64
+
+          - os: windows-latest
+            rid: win-x64
+            artifact_name: FruityScale-windows-x64
+
+          - os: windows-latest
+            rid: win-arm64
+            artifact_name: FruityScale-windows-arm64
+
+          - os: macos-latest
+            rid: osx-x64
+            artifact_name: FruityScale-mac-x64
+
+          - os: macos-latest
+            rid: osx-arm64
+            artifact_name: FruityScale-mac-arm64
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish Executables
+      run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=false -o ./publish-output
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: ./publish-output/
