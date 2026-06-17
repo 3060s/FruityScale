@@ -6,7 +6,9 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AssemblyName>FruityScale</AssemblyName>
         <RootNamespace>FruityScale</RootNamespace>
+        <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
     </PropertyGroup>
 
     <ItemGroup>
@@ -37,4 +39,12 @@
       <ProjectReference Include="..\FruityScale.Infrastructure\FruityScale.Infrastructure.csproj" />
       <ProjectReference Include="..\FruityScale.Presentation\FruityScale.Presentation.csproj" />
     </ItemGroup>
+    
+    <!--Delete .pdb files from SkiaSharp and HarfBuzzSharp from publish-->
+    <Target Name="DeletePdbFiles" AfterTargets="Publish">
+        <ItemGroup>
+            <PdbFilesToDelete Include="$(PublishDir)\**\*.pdb" />
+        </ItemGroup>
+        <Delete Files="@(PdbFilesToDelete)" />
+    </Target>
 </Project>
