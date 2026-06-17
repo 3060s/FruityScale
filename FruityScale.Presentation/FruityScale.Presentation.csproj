@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <AvaloniaResource Include="Assets\avalonia-logo.ico" />
       <AvaloniaResource Include="Assets\favicon.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AvaloniaResource>
