@@ -8,6 +8,7 @@ jobs:
     name: Publish on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
@@ -57,7 +58,7 @@ jobs:
 
         cp -a ./temp-mac/. ./publish-output/FruityScale.app/Contents/MacOS/
 
-        chmod +x ./publish-output/FruityScale.app/Contents/MacOS/FruityScale
+        chmod +x ./publish-output/FruityScale.app/Contents/MacOS/FruityScale.App
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
