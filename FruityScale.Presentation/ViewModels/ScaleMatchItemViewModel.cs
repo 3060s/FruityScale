@@ -93,9 +93,8 @@ public class PianoKeyViewModel
     {
         NoteName = noteName;
         IsWhiteKey = !noteName.Contains('#');
-        KeyHeight = IsWhiteKey ? 80 : 50; // make black keys shorter
-
-        // TODO: imo this coloring logic is a bit unreadable 
+        KeyHeight = IsWhiteKey ? 80 : 50; // makes black keys shorter
+        
         if (isWrong)
         {
             BackgroundColor = "#2D1A1A";

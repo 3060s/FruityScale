@@ -55,8 +55,6 @@
             </Button>
         </Grid>
         
-        <!-- TODO: This grid shows sometimes after clicking to scan notes which has to be changed -->
-        <!-- It can be made more responsive, but I have no idea how to -->
         <!-- View/Guide before scanning notes -->
         <Grid Grid.Row="2" 
               IsVisible="{Binding HasNoResults}" 
