@@ -5,11 +5,11 @@ on:
 
 jobs:
   build:
-    name: Publish on ${{ matrix.os }}
+    name: Publish ${{ matrix.artifact_name }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
             rid: linux-x64
@@ -46,12 +46,12 @@ jobs:
     - name: Publish Executables (Windows & Linux)
       if: matrix.os != 'macos-latest'
       run: >
-        dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeNativeLibrariesForSelfContained=true -p:IncludeAllContentForSelfContained=true -p:DebugType=None -p:DebugSymbols=false -o ./publish-output
+        dotnet publish FruityScale.App/FruityScale.App.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeNativeLibrariesForSelfContained=true -p:IncludeAllContentForSelfContained=true -p:DebugType=None -p:DebugSymbols=false -o ./publish-output
 
     - name: Publish Executables (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:DebugType=None -p:DebugSymbols=false -o ./temp-mac
+        dotnet publish FruityScale.App/FruityScale.App.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:DebugType=None -p:DebugSymbols=false -o ./temp-mac
 
         mkdir -p ./publish-output/FruityScale.app/Contents/MacOS
 
