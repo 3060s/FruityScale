@@ -6,10 +6,14 @@ namespace FruityScale.Infrastructure.Services;
 public class FlStudioSetupService : ISetupService
 {
     private readonly ILogger<FlStudioSetupService> _logger;
+    private readonly IEnvironmentService _environmentService;
 
-    public FlStudioSetupService(ILogger<FlStudioSetupService> logger)
+    public FlStudioSetupService(
+        ILogger<FlStudioSetupService> logger,
+        IEnvironmentService environmentService)
     {
         _logger = logger;
+        _environmentService = environmentService;
     }
     
     public bool ValidateAndSetup(string path)
@@ -32,26 +36,26 @@ public class FlStudioSetupService : ISetupService
 
             Directory.CreateDirectory(targetScriptsFolder);
             
-            // path we get the script from
-            string sourceScriptPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Resources",
-                "FLNotesExport.pyscript"
-            );
-
             // path we copy the script to
             string targetScriptPath = Path.Combine(
                 targetScriptsFolder,
                 "FLNotesExport.pyscript"
             );
 
-            if (!File.Exists(sourceScriptPath))
+            // create directory and copy .pyscript
+            using (var sourceStream = _environmentService.GetFlNotesExportScriptStream())
             {
-                _logger.LogError("Setup failed: Source script file not found at: {SourcePath}", sourceScriptPath);
-                return false;
-            }
+                if (sourceStream == null)
+                {
+                    _logger.LogError("Setup failed: Source script stream from assets is null.");
+                    return false;
+                }
 
-            File.Copy(sourceScriptPath, targetScriptPath, overwrite: true);
+                using (var targetStream = File.Create(targetScriptPath))
+                {
+                    sourceStream.CopyTo(targetStream);
+                }
+            }
             
             _logger.LogInformation("Successfully deployed FL Studio script to: {TargetPath}", targetScriptPath);
             return true;

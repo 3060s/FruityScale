@@ -1,27 +1,22 @@
+using System.Text;
 using System.Text.Json;
 using FruityScale.Application.Contracts;
 using FruityScale.Infrastructure.Persistence;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace FruityScale.Tests.Infrastructure;
 
-public class JsonScaleProviderTests : IDisposable
+public class JsonScaleProviderTests
 {
-    private readonly string _tempAppFolder;
-    private readonly string _tempFilePath;
     private readonly IEnvironmentService _environmentServiceMock;
     private readonly ILogger<JsonScaleProvider> _loggerMock;
 
     public JsonScaleProviderTests()
     {
         // ARRANGE - Common setup for all tests
-        _tempAppFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-        _tempFilePath = Path.Combine(_tempAppFolder, "scales.json");
-
         _environmentServiceMock = Substitute.For<IEnvironmentService>();
-        _environmentServiceMock.ScaleLibraryPath.Returns(_tempFilePath);
-
         _loggerMock = Substitute.For<ILogger<JsonScaleProvider>>();
     }
 
@@ -29,6 +24,7 @@ public class JsonScaleProviderTests : IDisposable
     public async Task GetScalesAsync_WhenFileDoesNotExist_ReturnsEmptyListAndLogsWarning()
     {
         // ARRANGE
+        _environmentServiceMock.GetScaleLibraryStream().Returns((Stream)null!);
         var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
 
         // ACT
@@ -42,7 +38,7 @@ public class JsonScaleProviderTests : IDisposable
         _loggerMock.Received().Log(
             LogLevel.Warning,
             Arg.Any<EventId>(),
-            Arg.Is<object>(o => o.ToString()!.Contains("Scales library file does not exist")),
+            Arg.Is<object>(o => o.ToString()!.Contains("Scales library stream is null")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
     }
@@ -51,17 +47,16 @@ public class JsonScaleProviderTests : IDisposable
     public async Task GetScalesAsync_WhenFileHasValidJson_ReturnsDeserializedScales()
     {
         // ARRANGE
-        Directory.CreateDirectory(_tempAppFolder);
-        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
-
-        // Create a dummy JSON array. 
-        // Note: Using lowercase property names to test the PropertyNameCaseInsensitive = true behavior
         var validJson = @"
         [
             { ""name"": ""Major Scale"" },
             { ""name"": ""Minor Scale"" }
         ]";
-        await File.WriteAllTextAsync(_tempFilePath, validJson);
+        
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(validJson));
+        _environmentServiceMock.GetScaleLibraryStream().Returns(stream);
+        
+        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
 
         // ACT
         var result = await provider.GetScalesAsync();
@@ -82,11 +77,11 @@ public class JsonScaleProviderTests : IDisposable
     public async Task GetScalesAsync_WhenFileContainsInvalidJson_ReturnsEmptyListAndLogsError()
     {
         // ARRANGE
-        Directory.CreateDirectory(_tempAppFolder);
-        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
+        var invalidJson = "[ { invalid_json } ]";
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(invalidJson));
+        _environmentServiceMock.GetScaleLibraryStream().Returns(stream);
 
-        // Malformed JSON string
-        await File.WriteAllTextAsync(_tempFilePath, "[ { invalid_json } ]");
+        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
 
         // ACT
         var result = await provider.GetScalesAsync();
@@ -108,14 +103,9 @@ public class JsonScaleProviderTests : IDisposable
     public async Task GetScalesAsync_WhenUnexpectedExceptionOccurs_ReturnsEmptyListAndLogsError()
     {
         // ARRANGE
-        Directory.CreateDirectory(_tempAppFolder);
-        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
-        
-        // Create an empty file first
-        await File.WriteAllTextAsync(_tempFilePath, "[]");
+        _environmentServiceMock.GetScaleLibraryStream().Throws(new IOException("Simulated IO device failure"));
 
-        // Lock the file to force an IOException when the provider tries to open it
-        using var fileLock = new FileStream(_tempFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        var provider = new JsonScaleProvider(_loggerMock, _environmentServiceMock);
 
         // ACT
         var result = await provider.GetScalesAsync();
@@ -128,24 +118,8 @@ public class JsonScaleProviderTests : IDisposable
         _loggerMock.Received().Log(
             LogLevel.Error,
             Arg.Any<EventId>(),
-            Arg.Is<object>(o => o.ToString()!.Contains("Unexpected error while reading scale library file")),
-            Arg.Any<IOException>(), // The underlying exception should be an IOException
+            Arg.Is<object>(o => o.ToString()!.Contains("Unexpected error while reading scale library stream")),
+            Arg.Any<IOException>(), 
             Arg.Any<Func<object, Exception?, string>>());
-    }
-
-    public void Dispose()
-    {
-        // CLEANUP - Remove temporary files and directories after each test
-        if (Directory.Exists(_tempAppFolder))
-        {
-            try
-            {
-                Directory.Delete(_tempAppFolder, recursive: true);
-            }
-            catch
-            {
-                // Ignore cleanup errors during test teardown
-            }
-        }
     }
 }

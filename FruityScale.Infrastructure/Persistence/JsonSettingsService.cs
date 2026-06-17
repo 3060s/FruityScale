@@ -46,7 +46,7 @@ public class JsonSettingsService : ISettingsService
         try
         {
             var json = File.ReadAllText(_configPath);
-            var settings = JsonSerializer.Deserialize<UserSettings>(json);
+            var settings = JsonSerializer.Deserialize<UserSettings>(json, _jsonOptions);
             _logger.LogInformation("Configuration loaded successfully.");
             return settings ?? new UserSettings();
         }

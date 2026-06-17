@@ -17,7 +17,6 @@ public class JsonNoteProvider : INoteProvider
     public async Task<List<NoteEvent>> LoadNotesAsync(string filePath)
     {
         _logger.LogInformation("Attempting to load notes from file: {FilePath}", filePath);
-        //if (!File.Exists(filePath)) return new List<NoteEvent>();
         
         try
         {
