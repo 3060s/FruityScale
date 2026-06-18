@@ -4,11 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:FruityScale.Presentation.ViewModels"
         xmlns:views="using:FruityScale.Presentation.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="FruityScale.Presentation.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="FruityScale"
-        Icon="avares://FruityScale.Infrastructure/Resources/favicon.png">
+        Icon="avares://FruityScale.Presentation/Assets/favicon.png"
+        Width="1280" Height="720"
+        MinWidth="960" MinHeight="540"
+        WindowStartupLocation="CenterScreen">
     
         <Window.DataTemplates>
                 <DataTemplate DataType="{x:Type vm:SetupViewModel}">

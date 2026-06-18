@@ -1,3 +1,4 @@
+using Avalonia.Platform;
 using FruityScale.Application.Contracts;
 using FruityScale.Domain.Enums;
 
@@ -82,5 +83,27 @@ public class EnvironmentService : IEnvironmentService
                 
             _ => string.Empty
         };
+    }
+    
+    // Path definition
+    public string AppFolder => 
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
+
+    public string LogFilePath => 
+        Path.Combine(AppFolder, "logs", "fruityscale-.txt");
+
+    public string ConfigFilePath => 
+        Path.Combine(AppFolder, "config.json");
+    
+    public Stream GetScaleLibraryStream()
+    {
+        var uri = new Uri("avares://FruityScale.Infrastructure/Resources/scale_library.json");
+        return AssetLoader.Open(uri);
+    }
+    
+    public Stream GetFlNotesExportScriptStream()
+    {
+        var uri = new Uri("avares://FruityScale.Infrastructure/Resources/FLNotesExport.pyscript");
+        return AssetLoader.Open(uri);
     }
 }

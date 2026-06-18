@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FruityScale.Application.Contracts;
+using FruityScale.Domain.Models;
 using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Infrastructure.Persistence;
@@ -7,52 +8,71 @@ namespace FruityScale.Infrastructure.Persistence;
 public class JsonSettingsService : ISettingsService
 {
     private readonly ILogger<JsonSettingsService> _logger;
+    private readonly IEnvironmentService _environment;
     private readonly string _configPath;
-    private string _cachedPath = string.Empty;
+    private readonly JsonSerializerOptions _jsonOptions;
+    private readonly UserSettings _cachedSettings;
+    
+    public UserSettings Current => _cachedSettings;
 
-    public JsonSettingsService(ILogger<JsonSettingsService> logger)
+    public JsonSettingsService(
+        ILogger<JsonSettingsService> logger,
+        IEnvironmentService environment)
     {
         _logger = logger;
+        _environment = environment;
+        _jsonOptions = new JsonSerializerOptions 
+        { 
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
         
-        // TODO: change .fruityscale (or directory in general) to something different
-        var appFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
-        Directory.CreateDirectory(appFolder);
-        _configPath = Path.Combine(appFolder, "config.json");
+        Directory.CreateDirectory(_environment.AppFolder);
+        _configPath = _environment.ConfigFilePath;
+        
+        _cachedSettings = LoadSettingsFromFile();
     }
-
-    public string GetFlStudioPath()
+    
+    private UserSettings LoadSettingsFromFile()
     {
-        if (!string.IsNullOrEmpty(_cachedPath)) return _cachedPath;
-        if (!File.Exists(_configPath)) return string.Empty;
+        if (!File.Exists(_configPath))
+        {
+            _logger.LogInformation("Config file not found. Creating default settings.");
+            var defaultSettings = new UserSettings();
+            SaveToFile(defaultSettings);
+            return defaultSettings;
+        }
 
         try
         {
             var json = File.ReadAllText(_configPath);
-            using var doc = JsonDocument.Parse(json);
-            _cachedPath = doc.RootElement.GetProperty("FlStudioPath").GetString() ?? string.Empty;
-            _logger.LogInformation("Loaded FL Studio path from config: {Path}", _cachedPath);
-            
-            return _cachedPath;
+            var settings = JsonSerializer.Deserialize<UserSettings>(json, _jsonOptions);
+            _logger.LogInformation("Configuration loaded successfully.");
+            return settings ?? new UserSettings();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error reading FL Studio path from config file.");
-            return string.Empty;
+            _logger.LogError(ex, "Error reading config file. Falling back to defaults.");
+            return new UserSettings();
         }
     }
 
-    public void SaveFlStudioPath(string path)
+    public void Update(Action<UserSettings> updateAction)
     {
-        _cachedPath = path;
-        
+        updateAction(_cachedSettings);
+        SaveToFile(_cachedSettings);
+    }
+
+    private void SaveToFile(UserSettings settings)
+    {
         try
         {
-            var json = JsonSerializer.Serialize(new { FlStudioPath = path });
+            var json = JsonSerializer.Serialize(settings, _jsonOptions);
             File.WriteAllText(_configPath, json);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save FL Studio path to {ConfigPath}", _configPath);
+            _logger.LogError(ex, "Failed to save config to {ConfigPath}", _configPath);
         }
     }
 }

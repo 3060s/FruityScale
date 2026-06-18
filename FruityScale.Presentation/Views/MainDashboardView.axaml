@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:FruityScale.Presentation.ViewModels"
              xmlns:converters="using:FruityScale.Presentation.Converters"
+             xmlns:gif="clr-namespace:Avalonia.Labs.Gif;assembly=Avalonia.Labs.Gif"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
              x:Class="FruityScale.Presentation.Views.MainDashboardView"
              x:DataType="vm:MainDashboardViewModel"
@@ -11,40 +12,106 @@
     
     <UserControl.Resources>
         <converters:NoteNameConverter x:Key="NoteNameConverter"/>
+        <converters:GifSourceConverter x:Key="GifSourceConverter"/>
     </UserControl.Resources>
     
     <Grid RowDefinitions="Auto, Auto, *, Auto" Margin="24">
-        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
-            <StackPanel Grid.Column="0" Spacing="4">
+        <Grid Grid.Row="0" ColumnDefinitions="*, 340" Margin="0,0,0,24">
+            <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
                 <TextBlock Text="FruityScale Dashboard" FontSize="24" FontWeight="SemiBold" Foreground="#F3F4F6"/>
                 <TextBlock Text="{Binding DawPath, StringFormat='Active Path: {0}'}" FontSize="12" Foreground="#9CA3AF" TextWrapping="NoWrap"/>
             </StackPanel>
-        </Grid>
 
-        <!-- Scan piano roll button -->
-        <Button Grid.Row="1" 
-                Content="Scan Piano Roll" 
-                Command="{Binding ScanNotesCommand}"
-                IsEnabled="{Binding !IsScanning}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Padding="16"
-                Background="#10B981"
-                Foreground="#FFFFFF"
-                FontSize="15"
-                FontWeight="SemiBold"
-                CornerRadius="8"
-                Cursor="Hand"
-                Margin="0,0,0,20">
-            <Button.Styles>
-                <Style Selector="Button:pointerover /template/ ContentPresenter">
-                    <Setter Property="Background" Value="#059669"/>
-                </Style>
-            </Button.Styles>
-        </Button>
+            <!-- Scan piano roll button -->
+            <Button Grid.Column="1" 
+                    Content="SCAN PIANO ROLL" 
+                    Command="{Binding ScanNotesCommand}"
+                    IsEnabled="{Binding !IsScanning}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Padding="0,14"
+                    Background="#1E1E22"
+                    Foreground="#10B981"
+                    BorderBrush="#10B981"
+                    BorderThickness="1"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    LetterSpacing="1"
+                    CornerRadius="6"
+                    Cursor="Hand">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#10B981"/>
+                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                        <Setter Property="BorderBrush" Value="#10B981"/>
+                    </Style>
+                    <Style Selector="Button:disabled /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#161619"/>
+                        <Setter Property="Foreground" Value="#4B5563"/>
+                        <Setter Property="BorderBrush" Value="#374151"/>
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </Grid>
+        
+        <!-- View/Guide before scanning notes -->
+        <Grid Grid.Row="2" 
+              IsVisible="{Binding HasNoResults}" 
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Margin="24">
+            
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <TextBlock Text="💡" 
+                           FontSize="32"
+                           HorizontalAlignment="Center"/>
+                
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Ready to analyze your melodies" 
+                               Foreground="#F3F4F6" 
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>
+                    
+                    <TextBlock Text="Run the FLNotesExport script in FL Studio, then click Scan Piano Roll above." 
+                               Foreground="#9CA3AF" 
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+                </StackPanel>
+
+                <Button Command="{Binding ToggleGifSizeCommand}"
+                        HorizontalAlignment="Center"
+                        Padding="14,10"
+                        Background="#252529"
+                        BorderBrush="#3D3D44"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Cursor="Hand">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#2A2A30"/>
+                            <Setter Property="BorderBrush" Value="#10B981"/>
+                        </Style>
+                    </Button.Styles>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="❓" FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="Don't know how to use the script? Watch Guide" 
+                                   Foreground="#E5E7EB"
+                                   FontSize="13" 
+                                   FontWeight="Medium" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
 
         <!-- Scanning result as scrollable list -->
         <ListBox Grid.Row="2" 
+                 IsVisible="{Binding !HasNoResults}"
                  ItemsSource="{Binding ScanResults}" 
                  Background="#1E1E22" 
                  CornerRadius="8"
@@ -98,7 +165,7 @@
                                 
                                 <!-- Match score in percentage % -->
                                 <Border Grid.Column="0" 
-                                        Background="#1A2E26" 
+                                        Background="{Binding ScoreBackgroundColor}" 
                                         CornerRadius="4" 
                                         Padding="8,4" 
                                         Margin="0,0,16,0"
@@ -106,7 +173,7 @@
                                     <TextBlock Text="{Binding Result.Score, StringFormat='{}{0:P0}'}" 
                                                FontWeight="Bold" 
                                                FontSize="14" 
-                                               Foreground="#34D399"
+                                               Foreground="{Binding ScoreColor}"
                                                HorizontalAlignment="Center"/>
                                 </Border>
                                 
@@ -297,6 +364,53 @@
                        FontSize="12" 
                        Foreground="#9CA3AF"
                        TextWrapping="Wrap"/>
+        </Border>
+        
+        <Border Grid.Row="0" 
+                Grid.RowSpan="4" 
+                Background="#121214"
+                ClipToBounds="True"
+                IsVisible="{Binding IsGifExpanded}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+    
+            <Grid RowDefinitions="Auto, *">
+        
+                <Button Grid.Row="0"
+                        Command="{Binding ToggleGifSizeCommand}"
+                        HorizontalAlignment="Right"
+                        Margin="24"
+                        Padding="12,8"
+                        Background="#252529"
+                        Foreground="#FFFFFF"
+                        CornerRadius="6"
+                        Cursor="Hand">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#EF4444"/>
+                        </Style>
+                    </Button.Styles>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="✕" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="Close Fullscreen" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Border Grid.Row="1"
+                        Margin="40,0,40,40"
+                        Background="#1E1E22"
+                        BorderBrush="#2D2D34"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        ClipToBounds="True"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <gif:GifImage Source="{Binding Source='avares://FruityScale.Presentation/Assets/FL_ExportGuide.gif', Converter={StaticResource GifSourceConverter}}"
+                                  MaxWidth="1280"
+                                  MaxHeight="720"
+                                  Stretch="Uniform" />
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

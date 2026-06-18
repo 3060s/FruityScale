@@ -69,7 +69,11 @@ public partial class SetupViewModel : ViewModelBase
         if (success)
         {
             _logger.LogInformation("Path validation and script setup successful. Saving path...");
-            _settingsService.SaveFlStudioPath(SelectedPath);
+
+            _settingsService.Update(settings => 
+            {
+                settings.FlStudioPath = SelectedPath;
+            });
             
             // Inform MainWindowViewModel to change view after correct setup
             _mainNavigation.DetermineInitialView();

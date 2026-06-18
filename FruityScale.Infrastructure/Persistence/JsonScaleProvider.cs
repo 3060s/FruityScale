@@ -8,27 +8,30 @@ namespace FruityScale.Infrastructure.Persistence;
 public class JsonScaleProvider : IScaleProvider
 {
     private readonly ILogger<JsonScaleProvider> _logger;
+    private readonly IEnvironmentService _environmentService;
 
-    public JsonScaleProvider(ILogger<JsonScaleProvider> logger)
+    public JsonScaleProvider(
+        ILogger<JsonScaleProvider> logger, 
+        IEnvironmentService environmentService)
     {
         _logger = logger;
+        _environmentService = environmentService;
     }
     
-    // TODO: filePath shouldn't be passed as param. The best option is to get filepath const from something like appsettings.json
-    public async Task<List<ScaleDefinition>> GetScalesAsync(string filePath)
+    public async Task<List<ScaleDefinition>> GetScalesAsync()
     {
-        _logger.LogInformation("Attempting to load scales library from file: {FilePath}", filePath);
-        //if (!File.Exists(filePath)) return new List<ScaleDefinition>();
+        
+        _logger.LogInformation("Attempting to load scales library from embedded environment stream.");
         
         try
         {
-            if (!File.Exists(filePath))
+            await using var stream = _environmentService.GetScaleLibraryStream();
+            
+            if (stream == null)
             {
-                _logger.LogWarning("Scales library file does not exist at path: {FilePath}", filePath);
+                _logger.LogWarning("Scales library stream is null.");
                 return new List<ScaleDefinition>();
             }
-
-            await using var stream = File.OpenRead(filePath);
             
             // Ignore case
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
@@ -44,7 +47,7 @@ public class JsonScaleProvider : IScaleProvider
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while reading scale library file at {FilePath}", filePath);
+            _logger.LogError(ex, "Unexpected error while reading scale library stream.");
             return new List<ScaleDefinition>();
         }
     }

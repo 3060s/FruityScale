@@ -19,9 +19,15 @@ public partial class MainDashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _isScanning;
+    
+    [ObservableProperty]
+    private bool _hasNoResults = true;
+    
+    [ObservableProperty]
+    private bool _isGifExpanded;
 
     [ObservableProperty]
-    private string _statusMessage = "Ready to scan. Run FlStudioNotesExporter script in FL studio, and click Scan.";
+    private string _statusMessage = "Ready to scan. Run FLNotesExport script in FL studio, and click Scan.";
     
     public ObservableCollection<ScaleMatchItemViewModel> ScanResults { get; } = new();
 
@@ -34,9 +40,12 @@ public partial class MainDashboardViewModel : ViewModelBase
         _settingsService = settingsService;
         _logger = logger;
         
-        _dawPath = _settingsService.GetFlStudioPath();
+        _dawPath = _settingsService.Current.FlStudioPath;
         _logger.LogDebug("MainDashboardViewModel initialized with DAW path: {DawPath}", _dawPath);
     }
+    
+    [RelayCommand]
+    private void ToggleGifSize() => IsGifExpanded = !IsGifExpanded;
     
     [RelayCommand]
     private async Task ScanNotesAsync()
@@ -46,6 +55,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         IsScanning = true;
         StatusMessage = "Scanning and matching scales...";
         ScanResults.Clear();
+        HasNoResults = false;
 
         try
         {
@@ -79,6 +89,7 @@ public partial class MainDashboardViewModel : ViewModelBase
         finally
         {
             IsScanning = false;
+            HasNoResults = ScanResults.Count == 0;
         }
     }
 }

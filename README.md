@@ -1,5 +1,3 @@
-<b>THIS README IS WIP SO IT WILL BE CHANGED SOON</b>
-
 <a id="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -11,13 +9,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/3060s/FruityScale">
-    <img src="FruityScale.Infrastructure/Resources/favicon.png" alt="Logo" width="80" height="80">
+    <img src="FruityScale.Presentation/Assets/favicon.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">FruityScale</h3>
 
   <p align="center">
-    A smart companion application that analyzes your FL Studio Piano Roll notes to instantly identify matching musical scales.
+    Practical and easy-to-use application which is designed to help you make music in key and stay in scale.
     <br />
     <a href="https://github.com/3060s/FruityScale"><strong>Explore the docs »</strong></a>
     <br />
@@ -53,42 +51,27 @@
 FruityScale is a desktop application designed to bridge the gap between your DAW and music theory. It currently integrates with FL Studio via a lightweight, internal script. 
 
 With just few clicks, FruityScale retrieves note data directly from your current Piano Roll and instantly analyzes which musical scales those notes belong to. It is a quick and seamless way to stay in key, analyze complex chords, or figure out where to take your melodies next.
+<br><br>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**App preview:**
+<video src="https://github.com/user-attachments/assets/18d74d34-8b35-4c7d-aa3b-4bbd077b36e1" controls playsinline width="100%"></video>
 
 ### Built With
 
 * [![C#][CSharp-shield]][CSharp-url]
 * [![.NET][DotNet-shield]][DotNet-url]
 * [![AvaloniaUI][Avalonia-shield]][Avalonia-url]
-
-> **Note:** This project also utilizes **Serilog** for robust logging and **xUnit** for comprehensive unit testing.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+* [![Serilog][Serilog-shield]][Serilog-url]
+* [![xUnit][xUnit-shield]][xUnit-url]
 
 ## Getting Started
 
-### Prerequisites
-
-To build this project from source, you need to install the required tools for your operating system:
-
-#### Windows
-1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download).
-2. **Git** – Download and install [Git for Windows](https://git-scm.com/download/win) (required to clone the repository via terminal).
-
-#### macOS
-1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download) (select the installer matching your chip: Intel or Apple Silicon M1/M2/M3).
-2. **Git** – Install via [Homebrew](https://brew.sh/) (`brew install git`) or download from [git-scm.com](https://git-scm.com/download/mac).
-
-#### Linux
-1. **.NET 10 SDK** – Install via your distribution's package manager (e.g., `sudo apt install dotnet-sdk-10.0` on Ubuntu) or follow the official [Linux .NET installation guide](https://learn.microsoft.com/en-us/dotnet/core/install/linux).
-2. **Git** – Install via your package manager (e.g., `sudo apt install git` or `sudo dnf install git`).
-
----
-
 ### Installation & Building from Source
 
-Once the prerequisites are installed, open your terminal (PowerShell or CMD on Windows) and follow these steps:
+1. Download and install .NET 10 SDK.
+2. Download Git.
+
+Once the prerequisites are installed, open your terminal/console and follow these steps:
 
 1. Clone the repository:
    ```sh
@@ -106,29 +89,44 @@ Once the prerequisites are installed, open your terminal (PowerShell or CMD on W
    ```sh
    dotnet run --project FruityScale.App
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Visual Guide
+
+Here you can see how to use export script inside FL Studio to generate .json file needed for app to match scales:
+
+<div align="center">
+  <img src="FruityScale.Presentation/Assets/FL_ExportGuide.gif" alt="FL Studio Export Guide" width="60%" height="60%" max-width="800px">
+</div>
 
 ## Usage
 
-1. Open your project in FL Studio and add some notes to the Piano Roll.
-2. Run the provided FruityScale internal script inside FL Studio.
-3. Open the FruityScale desktop app and click the fetch button.
-4. The application will instantly display all compatible musical scales based on your notes.
+FruityScale works side-by-side with FL Studio to make scale identification seamless. Follow these steps to analyze your project:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### 1. Prepare Your Notes
+Open your project in FL Studio and write or record some notes inside the **Piano Roll**.
 
-## Roadmap
+### 2. Run the Script in FL Studio
+Execute the provided FruityScale internal script within FL Studio. This will save our notes from piano roll into notes.json file needed for our app (as shown in the [Visual Guide](#visual-guide)).
 
-- [x] Initial FL Studio script integration
-- [x] One-click note data fetching
-- [x] Basic scale matching algorithm
-- [ ] Support for other popular DAWs (Ableton, Logic Pro, Reaper, etc.)
-- [ ] Advanced analysis tools and extended chord detection
-- [ ] Experimental: Live MIDI input tracking with real-time scale detection
+### 3. Fetch & Analyze
+* Open **FruityScale** application.
+* Click the **Scan Piano Roll** button on the main UI.
+
+### 4. Explore the Results
+FruityScale will instantly process your notes and provide a breakdown of:
+* **Compatible scales:** List of musical scales that perfectly or closely match your note selection.
+* **Played notes:** List of notes you have placed in piano roll.
+* **Notes you can add:** List of notes you can add to your piano roll which match the selected scale.
+* **Notes in selected scale:** List of notes available in selected scale.
+* **Virtual keyboard:** Visual representation of keyboard with all things described above.
+
+## Planned features
+
+- Support for other popular DAWs (Ableton, Logic Pro, Reaper, etc.) where scripting is possible
+- User settings
+- Menu with music theory cheat sheet
+- Live MIDI input tracking with real-time scale detection
 
 See the [open issues](https://github.com/3060s/FruityScale/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 
@@ -143,8 +141,6 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Top contributors:
 
 <a href="https://github.com/3060s/FruityScale/graphs/contributors">
@@ -155,13 +151,9 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the GPL-3.0 License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Contact
 
 Project Link: [https://github.com/3060s/FruityScale](https://github.com/3060s/FruityScale)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [contributors-shield]: https://img.shields.io/github/contributors/3060s/FruityScale.svg?style=for-the-badge
 [contributors-url]: https://github.com/3060s/FruityScale/graphs/contributors
@@ -180,3 +172,7 @@ Project Link: [https://github.com/3060s/FruityScale](https://github.com/3060s/Fr
 [DotNet-url]: https://dotnet.microsoft.com/
 [Avalonia-shield]: https://img.shields.io/badge/AvaloniaUI-33A3E3?style=for-the-badge&logo=dotnet&logoColor=white
 [Avalonia-url]: https://avaloniaui.net/
+[Serilog-shield]: https://img.shields.io/badge/Serilog-211150?style=for-the-badge&logo=serilog&logoColor=white
+[Serilog-url]: https://serilog.net/
+[xUnit-shield]: https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white
+[xUnit-url]: https://xunit.net/

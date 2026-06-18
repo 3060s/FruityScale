@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <AvaloniaResource Include="Assets\avalonia-logo.ico" />
+      <AvaloniaResource Include="Assets\favicon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <AvaloniaResource Include="Assets\FL_ExportGuide.gif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -20,9 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="12.0.3" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-preview.4.26230.115" />
+        <PackageReference Include="Avalonia" Version="12.0.4" />
+        <PackageReference Include="Avalonia.Labs.Gif" Version="12.0.2" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-preview.5.26302.115" />
     </ItemGroup>
 
 </Project>

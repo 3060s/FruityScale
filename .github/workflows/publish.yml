@@ -1,0 +1,66 @@
+name: Publish Release Executables
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Publish ${{ matrix.artifact_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact_name: FruityScale-linux-x64
+
+          - os: windows-latest
+            rid: win-x64
+            artifact_name: FruityScale-windows-x64
+
+          - os: windows-latest
+            rid: win-arm64
+            artifact_name: FruityScale-windows-arm64
+
+          - os: macos-latest
+            rid: osx-x64
+            artifact_name: FruityScale-mac-x64
+
+          - os: macos-latest
+            rid: osx-arm64
+            artifact_name: FruityScale-mac-arm64
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish Executables (Windows & Linux)
+      if: matrix.os != 'macos-latest'
+      run: >
+        dotnet publish FruityScale.App/FruityScale.App.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeNativeLibrariesForSelfContained=true -p:IncludeAllContentForSelfContained=true -p:DebugType=None -p:DebugSymbols=false -o ./publish-output
+
+    - name: Publish Executables (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        dotnet publish FruityScale.App/FruityScale.App.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishReadyToRun=true -p:PublishTrimmed=false -p:DebugType=None -p:DebugSymbols=false -o ./temp-mac
+
+        mkdir -p ./publish-output/FruityScale.app/Contents/MacOS
+
+        cp -a ./temp-mac/. ./publish-output/FruityScale.app/Contents/MacOS/
+
+        chmod +x ./publish-output/FruityScale.app/Contents/MacOS/FruityScale
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: ./publish-output/

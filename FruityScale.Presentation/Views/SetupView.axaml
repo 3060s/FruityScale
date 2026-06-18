@@ -64,7 +64,6 @@
                     </StackPanel>
                 </StackPanel>
                 
-                <!-- TODO: change pointer when on hover -->
                 <Button Content="Confirm Path &amp; Install Script" 
                         Command="{Binding ConfirmPathCommand}"
                         HorizontalAlignment="Stretch" 
@@ -74,7 +73,8 @@
                         FontWeight="SemiBold"
                         Background="#3B82F6"
                         Foreground="White"
-                        CornerRadius="6">
+                        CornerRadius="6"
+                        Cursor="Hand">
                     <Button.Styles>
                         <Style Selector="Button:pointerover /template/ ContentPresenter">
                             <Setter Property="Background" Value="#2563EB"/>
