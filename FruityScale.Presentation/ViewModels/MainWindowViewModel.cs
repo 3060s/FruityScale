@@ -55,7 +55,7 @@ public partial class MainWindowViewModel : ViewModelBase
             _logger.LogInformation("FL Studio path found: {Path}. Routing user to MainDashboardView.", currentPath);
             
             var dashboardLogger = _loggerFactory.CreateLogger<MainDashboardViewModel>();
-            CurrentContent = new MainDashboardViewModel(_orchestrator, _settingsService, dashboardLogger);
+            CurrentContent = new MainDashboardViewModel(_orchestrator, _settingsService, _setupService, dashboardLogger);
         }
     }
 }

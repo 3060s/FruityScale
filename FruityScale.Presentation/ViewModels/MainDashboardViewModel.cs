@@ -12,6 +12,7 @@ public partial class MainDashboardViewModel : ViewModelBase
 {
     private readonly ScaleMatchingOrchestrator _orchestrator;
     private readonly ISettingsService _settingsService;
+    private readonly ISetupService _setupService;
     private readonly ILogger<MainDashboardViewModel> _logger;
 
     [ObservableProperty]
@@ -34,13 +35,16 @@ public partial class MainDashboardViewModel : ViewModelBase
     public MainDashboardViewModel(
         ScaleMatchingOrchestrator orchestrator, 
         ISettingsService settingsService,
+        ISetupService setupService,
         ILogger<MainDashboardViewModel> logger)
     {
         _orchestrator = orchestrator;
         _settingsService = settingsService;
+        _setupService = setupService;
         _logger = logger;
         
         _dawPath = _settingsService.Current.FlStudioPath;
+        _setupService.ValidateAndSetup(_dawPath);
         _logger.LogDebug("MainDashboardViewModel initialized with DAW path: {DawPath}", _dawPath);
     }
     
