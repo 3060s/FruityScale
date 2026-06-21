@@ -1,3 +1,4 @@
+using FruityScale.Domain.Enums;
 using FruityScale.Domain.Models;
 using FruityScale.Domain.Services;
 
@@ -5,40 +6,70 @@ namespace FruityScale.Domain.MusicTheory;
 
 public class ScaleMatcher : IScaleMatcher
 {
-    public IEnumerable<ScaleMatchResult> Match(IEnumerable<int> userNotes, IEnumerable<ScaleDefinition> library)
+    public IEnumerable<ScaleMatchResult> Match(
+        IReadOnlyList<IReadOnlyCollection<int>> scoreParts, 
+        IEnumerable<ScaleDefinition> library)
     {
-        var uniqueNotes = userNotes.Select(n => n % MusicConstants.NotesInOctave).ToHashSet();
+        var allUniqueNotes = scoreParts
+            .SelectMany(p => p)
+            .Select(n => n % MusicConstants.NotesInOctave)
+            .ToHashSet();
+
+        if (allUniqueNotes.Count == 0) return [];
         
+        var progression = scoreParts
+            .Select(ChordDetector.Detect)
+            .Where(chord => chord != null)
+            .ToList();
+
+        var chordsOnly = progression.Where(c => c.Quality >= ChordQuality.PowerChord).ToList();
         var results = new List<ScaleMatchResult>();
-        
-        if (!uniqueNotes.Any()) return results;
 
         foreach (var scale in library)
         {
-            for (int i = 0; i < MusicConstants.NotesInOctave; i++)
+            for (int rootNote = 0; rootNote < MusicConstants.NotesInOctave; rootNote++)
             {
                 var scaleNotes = scale.Intervals
-                    .Select(interval => (interval + i) % MusicConstants.NotesInOctave)
+                    .Select(interval => (interval + rootNote) % MusicConstants.NotesInOctave)
                     .ToHashSet();
                 
-                var matches = uniqueNotes.Where(n => scaleNotes.Contains(n)).ToList();
-                var wrongNotes = uniqueNotes.Where(n => !scaleNotes.Contains(n)).ToList();
-                var missingNotes = scaleNotes.Where(n => !uniqueNotes.Contains(n)).ToList();
-                
-                double score = uniqueNotes.Count > 0 
-                    ? (double)matches.Count / uniqueNotes.Count 
-                    : 0;
-                
-                if (score > 0)
+                var matches = allUniqueNotes.Intersect(scaleNotes).ToList();
+                double baseScore = (double)matches.Count / allUniqueNotes.Count;
+
+                if (!(baseScore > 0)) 
+                    continue;
+
+                double heuristicBonus = 0;
+    
+                foreach (var chord in progression)
                 {
-                    results.Add(new ScaleMatchResult(
-                        Scale: scale,
-                        RootNote: i,
-                        Score: score,
-                        WrongNotes: wrongNotes,
-                        MissingNotes: missingNotes
-                    ));
+                    if (chord.Notes.IsSubsetOf(scaleNotes))
+                    {
+                        double normalizedChordWeight = Math.Clamp(chord.Weight * 0.05, 0.1, 0.3);
+                        heuristicBonus += normalizedChordWeight; 
+                    }
                 }
+    
+                if (chordsOnly.Count != 0)
+                {
+                    var firstChord = chordsOnly.First();
+                    var lastChord = chordsOnly.Last();
+        
+                    if (firstChord.RootNote == rootNote) heuristicBonus += 0.5;
+        
+                    if (lastChord.RootNote == rootNote) heuristicBonus += 1.0; 
+                }
+                
+                double popularityBonus = scale.Popularity * 0.5;
+                double finalScore = baseScore + heuristicBonus + popularityBonus;
+
+                results.Add(new ScaleMatchResult(
+                    Scale: scale,
+                    RootNote: rootNote,
+                    Score: finalScore,
+                    WrongNotes: allUniqueNotes.Except(scaleNotes).ToList(),
+                    MissingNotes: scaleNotes.Except(allUniqueNotes).ToList()
+                ));
             }
         }
         

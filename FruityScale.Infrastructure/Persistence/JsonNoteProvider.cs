@@ -8,6 +8,7 @@ namespace FruityScale.Infrastructure.Persistence;
 public class JsonNoteProvider : INoteProvider
 {
     private readonly ILogger<JsonNoteProvider> _logger;
+    private readonly JsonSerializerOptions _serializerOptions = new() { PropertyNameCaseInsensitive = true };
 
     public JsonNoteProvider(ILogger<JsonNoteProvider> logger)
     {
@@ -23,14 +24,13 @@ public class JsonNoteProvider : INoteProvider
             if (!File.Exists(filePath))
             {
                 _logger.LogWarning("notes.json file does not exist at path: {FilePath}", filePath);
-                return new List<NoteEvent>();
+                return [];
             }
             
             await using var stream = File.OpenRead(filePath);
             
             // Ignore case
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var notes = await JsonSerializer.DeserializeAsync<List<NoteEvent>>(stream, options) ?? new();
+            var notes = await JsonSerializer.DeserializeAsync<List<NoteEvent>>(stream, _serializerOptions) ?? [];
             
             _logger.LogInformation("Successfully deserialized {Count} notes from JSON.", notes.Count);
             return notes;
@@ -38,12 +38,12 @@ public class JsonNoteProvider : INoteProvider
         catch (JsonException ex)
         {
             _logger.LogError(ex, "Failed to parse notes.json. The file structure might be corrupted.");
-            return new List<NoteEvent>();
+            return [];
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error while reading notes file at {FilePath}", filePath);
-            return new List<NoteEvent>();
+            return [];
         }
     }
 }

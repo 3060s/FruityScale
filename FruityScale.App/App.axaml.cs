@@ -35,6 +35,7 @@ public partial class App : Avalonia.Application
             });
             
             services.AddSingleton<IScaleMatcher, ScaleMatcher>();
+            services.AddSingleton<IScorePartitioner, ScorePartitioner>();
             services.AddSingleton<IScaleProvider, JsonScaleProvider>();
             services.AddSingleton<INoteProvider, JsonNoteProvider>();
             services.AddSingleton<ISettingsService, JsonSettingsService>();

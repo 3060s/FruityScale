@@ -30,9 +30,9 @@ def apply(form):
         note_data = {
             "noteNumber": note.number,
             "name": full_name,
-            "key": name
-            # "time": note.time,
-            # "length": note.length,
+            "key": name,
+            "time": note.time,
+            "length": note.length
             # "color": note.color + 1
         }
         note_list.append(note_data)
