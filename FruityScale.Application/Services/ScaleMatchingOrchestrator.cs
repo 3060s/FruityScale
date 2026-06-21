@@ -13,6 +13,7 @@ public class ScaleMatchingOrchestrator
     private readonly INoteProvider _noteProvider;
     private readonly ISettingsService _settingsService;
     private readonly ISetupService _setupService;
+    private readonly IScorePartitioner _scorePartitioner;
     
     public ScaleMatchingOrchestrator(
         ILogger<ScaleMatchingOrchestrator> logger,
@@ -20,7 +21,8 @@ public class ScaleMatchingOrchestrator
         IScaleProvider scaleProvider, 
         INoteProvider noteProvider,
         ISettingsService settingsService,
-        ISetupService setupService)
+        ISetupService setupService,
+        IScorePartitioner scorePartitioner)
     {
         _logger = logger;
         _scaleMatcher = scaleMatcher;
@@ -28,6 +30,7 @@ public class ScaleMatchingOrchestrator
         _noteProvider = noteProvider;
         _settingsService = settingsService;
         _setupService = setupService;
+        _scorePartitioner = scorePartitioner;
     }
 
     public async Task<IEnumerable<ScaleMatchResult>> GetMatchesAsync()
@@ -38,14 +41,14 @@ public class ScaleMatchingOrchestrator
         if (string.IsNullOrEmpty(flPath)) 
         {
             _logger.LogWarning("Matching aborted: FL Studio path is not configured.");
-            return Enumerable.Empty<ScaleMatchResult>();
+            return [];
         }
         
         string flStudioFilePath = _setupService.GetNotesJsonPath(flPath);
         if (!File.Exists(flStudioFilePath)) 
         {
             _logger.LogWarning("Matching aborted: User notes file does not exist at {FilePath}", flStudioFilePath);
-            return Enumerable.Empty<ScaleMatchResult>();
+            return [];
         }
         
         try
@@ -61,24 +64,25 @@ public class ScaleMatchingOrchestrator
             if (userNotes.Count == 0)
             {
                 _logger.LogWarning("Matching aborted: No user notes were found in the exported file.");
-                return Enumerable.Empty<ScaleMatchResult>();
+                return [];
             }
-            
-            var noteNumbers = userNotes
-                .Select(n => n.NoteNumber)
-                .Distinct()
+
+            var parts = _scorePartitioner.Partition(userNotes);
+            var results = _scaleMatcher
+                .Match(parts, allScales)
+                .OrderByDescending(r => r.Score)
                 .ToList();
+
+            var maxScore = results.FirstOrDefault()?.Score ?? 1;
             
-            var results = _scaleMatcher.Match(noteNumbers, allScales).ToList();
+            _logger.LogInformation("Matching completed successfully. Found {Count} scale matches for {NoteCount} notes.", results.Count, userNotes.Count);
             
-            _logger.LogInformation("Matching completed successfully. Found {Count} scale matches for {NoteCount} distinct notes.", results.Count, noteNumbers.Count);
-            
-            return results.OrderByDescending(r => r.Score);
+            return results.Select(r => r with { Score = r.Score / maxScore });
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred during the orchestrator matching execution.");
-            return Enumerable.Empty<ScaleMatchResult>();
+            return [];
         }
     }
 }
